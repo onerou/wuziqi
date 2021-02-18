@@ -10,7 +10,7 @@
     "start": "webpack serve  -c webpack.default.config.ts --env development",
     "dev": "webpack -c webpack.default.config.ts --env development",
     "build": "webpack -c webpack.default.config.ts --env production",
-    "postbuild": "rm -rf /root/nginx/3040/wuziqi &&  cp -r ./dist /root/nginx/3040/wuziqi"
+    "postbuild": "scp -r ./dist/* hzAliyun:~/nginx/3040/wuziqi"
   },
   "keywords": [],
   "author": "",

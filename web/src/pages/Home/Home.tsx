@@ -38,7 +38,6 @@ export default class Home extends React.Component<any, HomeState> {
     }
     messageFn(message: any) {
         const data = JSON.parse(message) || {}
-        console.log("Home -> messageFn -> data", data)
         if (!this.state.userId && data.userId) {
             this.setState({
                 userId: data.userId
@@ -69,7 +68,7 @@ export default class Home extends React.Component<any, HomeState> {
         this.setState({ messageList: [data, ...this.state.messageList] })
     }
     UNSAFE_componentWillMount() {
-        const socket = new webSocket('ws://192.168.3.15:3030', (e) => { this.messageFn(e) }, '五子棋')
+        const socket = new webSocket(`ws://${process.env.NODE_ENV === 'production' ? '0.0.0.0' : 'www.hecheng.info'}:3045`, (e) => { this.messageFn(e) }, '五子棋')
         socket.connect({
             userId: this.state.userId,
             toUserId: this.state.toUserId

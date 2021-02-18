@@ -1,7 +1,7 @@
 const log4js = require("log4js");
 const WebSocket = require("ws"); // 引入模块
 const { parseTime } = require("./utils");
-const ws = new WebSocket.Server({ port: 3030 }, () => {
+const ws = new WebSocket.Server({ port: 3045 }, () => {
 });
 log4js.configure({
   appenders: { globalError: { type: "file", filename: "./log/error.log" } },
