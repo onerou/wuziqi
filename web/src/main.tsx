@@ -5,9 +5,8 @@ import {
   Switch,
   Route,
 } from "react-router-dom";
-import 'antd/dist/antd.css'
-import App from "@PAGE/App"
-import Home from "@PAGE/Home"
+import App from/* webpackPrefetch: true */ "@PAGE/App"
+import Home from/* webpackPrefetch: true */ "@PAGE/Home"
 const Main = function () {
   return (
     <HashRouter>

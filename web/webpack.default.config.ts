@@ -1,14 +1,16 @@
 import { CheckerPlugin } from "awesome-typescript-loader";
 import HtmlWebpackPlugin = require("html-webpack-plugin");
-import { join, resolve } from "path";
-module.exports = {
-  mode: "development",
+import { resolve } from "path";
+import { merge } from 'webpack-merge';
+import developmentConfig from "./config/webpack.development.config"
+import productionConfig from "./config/webpack.production.config"
+let allowConfig = process.env.NODE_ENV === 'production' ? productionConfig : developmentConfig
+let config: any = {
   entry: "./src/main.tsx",
   output: {
-    filename: "bundle.js",
+    filename: "[name].bundle.js",
     path: __dirname + "/dist",
   },
-  devtool: "source-map",
   resolve: {
     extensions: [".ts", ".tsx", ".js", ".json"],
     alias: {
@@ -39,13 +41,6 @@ module.exports = {
       },
     ],
   },
-  devServer: {
-    contentBase: join(__dirname, "dist"),
-    compress: true,
-    hot: true,
-    host: "0.0.0.0",
-    port: 9000,
-  },
   plugins: [
     new CheckerPlugin(),
     new HtmlWebpackPlugin({
@@ -54,3 +49,6 @@ module.exports = {
     }),
   ],
 };
+
+
+module.exports = merge(config, allowConfig)
