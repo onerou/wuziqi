@@ -5,6 +5,7 @@
   "main": "src/main.ts",
   "sideEffects": false,
   "scripts": {
+    "prebuild": "npm i ",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "webpack serve  -c webpack.default.config.ts --env development",
     "dev": "webpack -c webpack.default.config.ts --env development",
