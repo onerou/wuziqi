@@ -68,7 +68,7 @@ const changeChessBoard = ({userId,toUserId,isBlack,regretChess,resetBoard})=>{
         }))
         checkToUser(userId,toUserId)
     }
-    if (regretChess) {
+    if (regretChess && nextPlayer == !isBlack) {
         black.client.send(JSON.stringify({
             userId: black.id,
             toUserId: white.id,
