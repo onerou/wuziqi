@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "jsx": "react",
+    "allowJs": true,
+    "types": ["node"],
+    "target": "ES5",
+    "module": "CommonJS",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": "./",
+    "paths": {
+      "@PAGE/*": ["./src/pages/*"],
+      "@COMPONTENT/*": ["./src/components/*"],
+      "@/*": ["./src/*"],
+      "@UTILS/*": ["./src/utils/*"]
+    },
+    "plugins": [
+      {
+        "name": "typescript-plugin-css-modules",
+        "options": {
+          "customMatcher": "\\.(cs|les||les|sas|scs|t)s$"
+        }
+      }
+    ]
+  },
+  "include": ["src/**/*"]
+}
