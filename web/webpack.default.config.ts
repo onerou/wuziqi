@@ -1,14 +1,16 @@
 import { CheckerPlugin } from "awesome-typescript-loader";
-import HtmlWebpackPlugin = require("html-webpack-plugin");
+import HtmlWebpackPlugin from "html-webpack-plugin";
 import { resolve } from "path";
-import { merge } from 'webpack-merge';
-import developmentConfig from "./config/webpack.development.config"
-import productionConfig from "./config/webpack.production.config"
-let allowConfig = process.env.NODE_ENV === 'production' ? productionConfig : developmentConfig
+import { merge } from "webpack-merge";
+import developmentConfig from "./config/webpack.development.config";
+import productionConfig from "./config/webpack.production.config";
+import tsImportPluginFactory from "ts-import-plugin";
+let allowConfig =
+  process.env.NODE_ENV === "production" ? productionConfig : developmentConfig;
 let config: any = {
   entry: "./src/main.tsx",
   output: {
-    filename: "[name].bundle.js",
+    filename: "[name].bundle[chunkhash:8].js",
     path: __dirname + "/dist",
   },
   resolve: {
@@ -23,8 +25,43 @@ let config: any = {
   module: {
     rules: [
       {
+        test: /\.less$/i,
+        use: [
+          {
+            loader: "style-loader",
+          },
+          {
+            loader: "css-loader",
+          },
+          {
+            loader: "less-loader",
+            options: {
+              lessOptions: {
+                javascriptEnabled: true,
+                strictMath: false,
+              },
+            },
+          },
+        ],
+      },
+      {
         test: /\.tsx?$/,
         loader: "awesome-typescript-loader",
+        options: {
+          transpileOnly: true,
+          getCustomTransformers: () => ({
+            before: [
+              tsImportPluginFactory({
+                libraryName: "antd",
+                libraryDirectory: "lib",
+                style: true,
+              }),
+            ],
+          }),
+          compilerOptions: {
+            module: "es2015",
+          },
+        },
         exclude: /node_module/,
       },
       {
@@ -35,7 +72,7 @@ let config: any = {
         test: /\.(png|jpe?g|gif)$/i,
         use: [
           {
-            loader: 'file-loader',
+            loader: "file-loader",
           },
         ],
       },
@@ -50,5 +87,4 @@ let config: any = {
   ],
 };
 
-
-module.exports = merge(config, allowConfig)
+module.exports = merge(config, allowConfig);

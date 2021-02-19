@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "jsx": "react",
+    "moduleResolution": "node",
     "allowJs": true,
     "types": ["node"],
     "target": "ES5",
@@ -23,5 +24,6 @@
       }
     ]
   },
-  "include": ["src/**/*"]
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"]
 }

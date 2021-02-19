@@ -1,6 +1,6 @@
 import React from 'react';
 import { BoradContainer } from './BoradStyle'
-import _ from 'lodash';
+import { cloneDeep } from 'lodash';
 // import boots from '@UTILS/boot'
 interface Lattice {
     width: number, height: number
@@ -228,7 +228,7 @@ export default class Board extends React.Component<BoradProps, BoradState> {
                 } = prev;
                 // 销毁棋子
                 this.minusStep(x, y);
-                let newCheckerboard = _.cloneDeep(checkerboard)
+                let newCheckerboard = cloneDeep(checkerboard)
                 newCheckerboard[prev.x][prev.y] = 0; // 置空操作
                 // 角色发生改变,下一步的下棋是该撤销棋子的角色
                 this.setState({
