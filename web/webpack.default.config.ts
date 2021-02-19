@@ -54,7 +54,7 @@ let config: any = {
               tsImportPluginFactory({
                 libraryName: "antd",
                 libraryDirectory: "lib",
-                style: true,
+                style: "css",
               }),
             ],
           }),
