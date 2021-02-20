@@ -13,7 +13,7 @@ const Main = function () {
       <Switch>
         <Route exact path="/" component={App}>
         </Route>
-        <Route exact path="/home" name="home" component={Home}>
+        <Route path="/home" name="home" component={Home}>
         </Route>
       </Switch>
     </HashRouter>

@@ -1,9 +1,8 @@
 import React from 'react';
 import Board from '@COMPONTENT/Board'
 import webSocket from "@UTILS/webSocket"
-import { Input } from 'antd';
+// import { Button, Input } from 'antd';
 
-const { Search } = Input;
 interface HomeState {
     child: any,
     msg: string,
@@ -109,8 +108,9 @@ export default class Home extends React.Component<any, HomeState> {
     sendUserToIdChange() {
         this.state.socket.sendHandle({
             userId: this.state.userId,
-            toUserId: this.toUserIdInput.current.state.value / 1
+            toUserId: this.toUserIdInput.current.value / 1
         })
+
     }
     render() {
         return (<>
@@ -132,7 +132,7 @@ export default class Home extends React.Component<any, HomeState> {
                 userId:{this.state.userId}&nbsp;&nbsp;{this.state.isBlack == null ? '' : `执子：${this.state.isBlack ? '黑' : '白'}`}
             </div>
             <div className="userId">
-                to:{!this.state.toUserId ? (<Search ref={this.toUserIdInput} onSearch={() => this.sendUserToIdChange()} loading={this.state.loading} />) : this.state.toUserId}
+                to:{!this.state.toUserId ? (<><input ref={this.toUserIdInput} /> <button onClick={() => this.sendUserToIdChange()} >连接</button></>) : this.state.toUserId}
             </div>
         </>)
     }
