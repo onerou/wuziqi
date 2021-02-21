@@ -5,6 +5,7 @@ import { merge } from "webpack-merge";
 import developmentConfig from "./config/webpack.development.config";
 import productionConfig from "./config/webpack.production.config";
 import tsImportPluginFactory from "ts-import-plugin";
+import MiniCssExtractPlugin from "mini-css-extract-plugin";
 let allowConfig =
   process.env.NODE_ENV === "production" ? productionConfig : developmentConfig;
 let config: any = {
@@ -25,11 +26,9 @@ let config: any = {
   module: {
     rules: [
       {
-        test: /\.less$/i,
+        test: /\.(less)$/,
         use: [
-          {
-            loader: "style-loader",
-          },
+          MiniCssExtractPlugin.loader,
           {
             loader: "css-loader",
           },
@@ -48,25 +47,17 @@ let config: any = {
         test: /\.tsx?$/,
         loader: "awesome-typescript-loader",
         options: {
-          transpileOnly: true,
+          useBabel: false,
           getCustomTransformers: () => ({
             before: [
               tsImportPluginFactory({
                 libraryName: "antd",
-                libraryDirectory: "lib",
                 style: "css",
               }),
             ],
           }),
-          compilerOptions: {
-            module: "es2015",
-          },
         },
-        exclude: /node_module/,
-      },
-      {
-        test: /\.css$/i,
-        use: ["style-loader", "css-loader"],
+        exclude: [/node_modules/],
       },
       {
         test: /\.(png|jpe?g|gif)$/i,
@@ -84,6 +75,7 @@ let config: any = {
       filename: "index.html",
       template: resolve("./src/index.html"),
     }),
+    new MiniCssExtractPlugin(),
   ],
 };
 

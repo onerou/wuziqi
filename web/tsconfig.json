@@ -5,7 +5,7 @@
     "allowJs": true,
     "types": ["node"],
     "target": "ES5",
-    "module": "CommonJS",
+    "module":"CommonJS",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "baseUrl": "./",
