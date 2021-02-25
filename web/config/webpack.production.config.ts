@@ -5,6 +5,10 @@ export default {
     concatenateModules: true,
     sideEffects: true,
     minimize: true,
+    removeAvailableModules: true,
+    splitChunks: {
+      chunks: "all",
+    },
     runtimeChunk: {
       name: (entrypoint) => `runtime~${entrypoint.name}`,
     },

@@ -67,7 +67,7 @@ export default class Home extends React.Component<any, HomeState> {
         this.setState({ messageList: [data, ...this.state.messageList] })
     }
     UNSAFE_componentWillMount() {
-        const socket = new webSocket(`ws://${process.env.NODE_ENV === 'production' ? '0.0.0.0' : 'www.hecheng.info'}:3045`, (e) => { this.messageFn(e) }, '五子棋')
+        const socket = new webSocket(`ws://www.hecheng.info:3045`, (e) => { this.messageFn(e) }, '五子棋')
         socket.connect({
             userId: this.state.userId,
             toUserId: this.state.toUserId
