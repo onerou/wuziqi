@@ -38,7 +38,7 @@ const checkToUser = (from, to) => {
 }
 const sendDrew = ({userId,isBlack,drew}) => {
     const matchIndex = match.findIndex(v => v[isBlack ? 'black' : 'white'].id == userId)
-    if(matchIndex < 0) return // TODO: 错误捕获
+    if(matchIndex < 0) throw new Error('matchIndex < 0');// TODO: 错误捕获
     const { black, white, nextPlayer } = match[matchIndex]
     if(nextPlayer != isBlack) return
     black.client.send(JSON.stringify({
@@ -87,7 +87,6 @@ const changeChessBoard = ({userId,toUserId,isBlack,regretChess,resetBoard})=>{
 
 ws.on("connection", (client) => {
     client.on("message", (msg) => {
-        const thisClient = client
         if (msg === 'ping') {
             client.send('pong')
             return

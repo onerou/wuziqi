@@ -8,6 +8,9 @@ import tsImportPluginFactory from "ts-import-plugin";
 import MiniCssExtractPlugin from "mini-css-extract-plugin";
 let allowConfig =
   process.env.NODE_ENV === "production" ? productionConfig : developmentConfig;
+console.log("process.env.NODE_ENV", process.env.NODE_ENV);
+console.log("allowConfig", allowConfig);
+console.log("process.env.NODE_ENV", process.env.NODE_ENV);
 let config: any = {
   entry: "./src/main.tsx",
   output: {
