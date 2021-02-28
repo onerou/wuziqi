@@ -1,31 +1,119 @@
 import React from 'react';
 import {
-    Link
+    withRouter
 } from "react-router-dom";
+import { Button, Card, Input, Form, message } from "antd"
+import { ButtonContainer, UserInfoContainer } from "./AppStyle"
+import { connect } from "react-redux"
+import { contentWS, messageFn } from "@STORE/actions/asyncAction"
+import axios from "axios"
+import store from '@STORE/index'
 
 interface HomeState {
-    child: any,
-    msg: string,
     messageList: any[],
-    userId: number
+    infoVisible: boolean,
+    contentButton: boolean,
+    toUserId: number | string,
+    userName: null | string,
+    errorMsg: string,
+    contentLoading: boolean
 }
-export default class App extends React.Component<any, HomeState> {
 
+function mapStateToProps(state: HomeState) {
+    return {
+        ...state
+    }
+}
+
+const mapDispatchToProps = {
+    contentWS,
+    messageFn
+}
+
+const layout = {
+    labelCol: { span: 6 },
+    wrapperCol: { span: 14 },
+};
+const tailLayout = {
+    wrapperCol: { offset: 6, span: 14 },
+};
+const { Search } = Input;
+class App extends React.Component<any, HomeState> {
+    form: any;
     constructor(props) {
         super(props);
         this.state = {
-            child: null,
-            msg: '',
             messageList: [],
-            userId: 0
+            toUserId: null,
+            infoVisible: false,
+            contentButton: true,
+            userName: this.props.userName,
+            errorMsg: '',
+            contentLoading: false
         }
+        store.subscribe(() => {
+            if (this.props.history.location.pathname !== "/") return;
+            if (this.props.toUserId && this.props.history.location.pathname != "/home") this.props.history.push("/home");
+        })
     }
-
+    changeInfoVisible(flag: boolean) {
+        this.props.contentWS()
+        this.setState({
+            infoVisible: flag
+        })
+    }
+    onFinish = (e) => {
+    }
+    handleChangeUserName(e) {
+        this.setState({ userName: e.target.value })
+    }
+    onSearch(e) {
+        let _this = this
+        axios.get(`http://localhost:3048/hasUserId?userID=${e}`).then(({ data, msg }: any) => {
+            if (data) {
+                _this.setState({ contentButton: !data })
+            }
+            if (msg) {
+                message.error(msg);
+            }
+        })
+    }
+    handleChangeToUserName(e) {
+        this.setState({ toUserId: e.target.value })
+    }
+    contactToUser() {
+        this.setState({ contentLoading: true })
+        this.props.messageFn({
+            userId: this.props.userId,
+            toUserId: Number(this.state.toUserId),
+            userName: this.state.userName
+        })
+    }
     render() {
         return (<>
-            <Link to="/home">
-                <button >进入游戏</button>
-            </Link>
+            <ButtonContainer>
+                {this.state.infoVisible ?
+                    <Card title="登陆信息" style={{ width: "100%" }}>
+                        <Form {...layout} onFinish={this.onFinish}>
+                            {/* <Form.Item label="用户名" >
+                                <Input placeholder="用户名" value={this.state.userName} onChange={(e) => this.handleChangeUserName(e)} />
+                            </Form.Item> */}
+                            <Form.Item label="用户ID" >
+                                <b>{this.props.userId}</b>
+                            </Form.Item>
+                            <Form.Item label="对战用户" >
+                                <Search placeholder="请输入用户ID" value={this.state.toUserId} onChange={(e) => this.handleChangeToUserName(e)} onSearch={(e) => this.onSearch(e)} />
+                            </Form.Item>
+                            <Form.Item {...tailLayout}>
+                                <Button type="primary" loading={this.state.contentLoading} block disabled={this.state.contentButton} onClick={() => this.contactToUser()}>匹配</Button>
+                            </Form.Item>
+                        </Form>
+                    </Card> :
+                    <Button type="primary" onClick={() => this.changeInfoVisible(true)}>进入游戏</Button>
+                }
+
+            </ButtonContainer>
         </>)
     }
 }
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(App))

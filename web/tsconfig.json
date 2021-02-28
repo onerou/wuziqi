@@ -4,8 +4,8 @@
     "moduleResolution": "node",
     "allowJs": true,
     "types": ["node"],
-    "target": "ES5",
-    "module":"CommonJS",
+    "target": "es2015",
+    "module":"ESNext",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "baseUrl": "./",
@@ -13,7 +13,8 @@
       "@PAGE/*": ["./src/pages/*"],
       "@COMPONTENT/*": ["./src/components/*"],
       "@/*": ["./src/*"],
-      "@UTILS/*": ["./src/utils/*"]
+      "@UTILS/*": ["./src/utils/*"],
+      "@STORE/*": ["./src/store/*"]
     },
     "plugins": [
       {

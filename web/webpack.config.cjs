@@ -1,14 +1,15 @@
-import { CheckerPlugin } from "awesome-typescript-loader";
-import HtmlWebpackPlugin from "html-webpack-plugin";
-import { resolve } from "path";
-import { merge } from "webpack-merge";
-import developmentConfig from "./config/webpack.development.config";
-import productionConfig from "./config/webpack.production.config";
-import tsImportPluginFactory from "ts-import-plugin";
-import MiniCssExtractPlugin from "mini-css-extract-plugin";
+const { CheckerPlugin } = require("awesome-typescript-loader");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const { resolve } = require("path");
+const { merge } = require("webpack-merge");
+const developmentConfig = require("./config/webpack.development.config.cjs");
+const productionConfig = require("./config/webpack.production.config.cjs");
+const tsImportPluginFactory = require("ts-import-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+
 let allowConfig =
   process.env.NODE_ENV === "production" ? productionConfig : developmentConfig;
-let config: any = {
+let config = {
   entry: "./src/main.tsx",
   output: {
     filename: "[name].bundle[chunkhash:8].js",
@@ -21,12 +22,13 @@ let config: any = {
       "@COMPONTENT": resolve(__dirname, "./src/components/"),
       "@": resolve(__dirname, "./src/"),
       "@UTILS": resolve(__dirname, "./src/utils/"),
+      "@STORE": resolve(__dirname, "./src/store/"),
     },
   },
   module: {
     rules: [
       {
-        test: /\.(less)$/,
+        test: /\.((le|c)ss)$/,
         use: [
           MiniCssExtractPlugin.loader,
           {
@@ -44,15 +46,17 @@ let config: any = {
         ],
       },
       {
-        test: /\.tsx?$/,
+        test: /\.(jsx|tsx|js|ts)$/,
         loader: "awesome-typescript-loader",
         options: {
           useBabel: false,
+          transpileOnly:true,
           getCustomTransformers: () => ({
             before: [
               tsImportPluginFactory({
                 libraryName: "antd",
-                style: "css",
+                libraryDirectory:"lib",
+                style: false,
               }),
             ],
           }),

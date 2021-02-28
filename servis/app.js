@@ -1,6 +1,8 @@
 const log4js = require("log4js");
 const WebSocket = require("ws"); // 引入模块
 const { parseTime } = require("./utils");
+const express = require("express");
+var URL = require('url');
 const ws = new WebSocket.Server({ port: 3045 }, () => {
 });
 log4js.configure({
@@ -36,7 +38,7 @@ const checkToUser = (from, to) => {
     playerFrom.client.send(JSON.stringify(sendFromUser))
     playerTo.client.send(JSON.stringify(sendToUser))
 }
-const sendDrew = ({userId,isBlack,drew}) => {
+const sendDrew = ({userId,isBlack,drewList}) => {
     const matchIndex = match.findIndex(v => v[isBlack ? 'black' : 'white'].id == userId)
     if(matchIndex < 0) throw new Error('matchIndex < 0');// TODO: 错误捕获
     const { black, white, nextPlayer } = match[matchIndex]
@@ -45,13 +47,13 @@ const sendDrew = ({userId,isBlack,drew}) => {
         userId: black.id,
         toUserId: white.id,
         isBlack: true,
-        drew
+        drewList
     }))
     white.client.send(JSON.stringify({
         userId: white.id,
         toUserId: black.id,
         isBlack: false,
-        drew
+        drewList
     }))
     match[matchIndex].nextPlayer = !isBlack
 }
@@ -91,7 +93,7 @@ ws.on("connection", (client) => {
             client.send('pong')
             return
         }
-        const { toUserId, userId, drew,regretChess,resetBoard,isBlack } = JSON.parse(msg)
+        const { toUserId, userId, drewList,regretChess,resetBoard,isBlack } = JSON.parse(msg)
         if (!userId) {
             const id = Math.floor(Math.random()*100000)
             global.clients.push({
@@ -106,10 +108,39 @@ ws.on("connection", (client) => {
             return
         }
         const hasToUserId = clients.some(v=>v.id==toUserId)
-        toUserId && hasToUserId && !drew && checkToUser(userId, toUserId)
-        toUserId && userId && drew && sendDrew({userId, toUserId,isBlack, drew})
-        toUserId && userId && (regretChess||resetBoard) && changeChessBoard({userId, toUserId,isBlack,regretChess,resetBoard})
+        toUserId && hasToUserId && !drewList && checkToUser(userId, toUserId)
+        toUserId && userId && drewList && sendDrew(JSON.parse(msg))
+        toUserId && userId && (regretChess||resetBoard) && changeChessBoard({userId, toUserId:Number(toUserId),isBlack,regretChess,resetBoard})
     });
     client.on("close", (msg) => {
     });
+});
+
+const app = express();
+app.use(express.static("views"));
+app.set("view engine", "pug");
+app.use(async (req, res, next) => {
+  try {
+    await next();
+  } catch (e) {
+    logger.error(e);
+  }
+});
+app.all('*', (req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "X-Requested-With");
+  res.header("Access-Control-Allow-Methods","PUT,POST,GET,DELETE,OPTIONS");
+  res.header("X-Powered-By",' 3.2.1')
+  res.header("Content-Type", "application/json;charset=utf-8");
+  next();
+});
+
+app.get("/hasUserId", (req, res, next) => {   
+    const { userID } = URL.parse(req.url, true).query;
+    const hasUserId = clients.some(client => client.id === Number(userID))
+    res.send(JSON.stringify({data:hasUserId,msg:hasUserId ? "" : '此UserId不存在'}));
+});
+
+app.listen(3048, async () => {
+  console.log("Example app listening on port 3048!");
 });

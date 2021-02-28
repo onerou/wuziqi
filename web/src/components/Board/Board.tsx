@@ -1,6 +1,7 @@
 import React from 'react';
 import { BoradContainer } from './BoradStyle'
-import { cloneDeep } from 'lodash';
+import { cloneDeep } from 'lodash'
+import store from '@STORE/index'
 // import boots from '@UTILS/boot'
 interface Lattice {
     width: number, height: number
@@ -25,7 +26,8 @@ interface BoradProps {
     lineWidth?: number
     onRef?: any,
     onHasResult: any
-    onDrawChessman?: (e) => void
+    onDrawChessman?: (e) => void,
+    drewList: []
 }
 export default class Board extends React.Component<BoradProps, BoradState> {
     public Canvas;
@@ -47,9 +49,14 @@ export default class Board extends React.Component<BoradProps, BoradState> {
             currentStep: 0,
             lineWidth: props.lineWidth || 2,
             win: false
-
         }
         this.Canvas = React.createRef()
+        store.subscribe(() => {
+            console.log(store.getState())
+            this.props.drewList.map((v: any) => {
+                this.drawChessman(v.position.x, v.position.y, v.isBlack)
+            })
+        })
     }
 
     initChessboardMatrix() {

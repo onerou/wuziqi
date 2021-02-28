@@ -1,6 +1,6 @@
-import { join, resolve } from "path";
+const { join, resolve } =require("path");
 
-export default {
+module.exports ={
     mode: "development",
     devtool: "source-map",
     devServer: {

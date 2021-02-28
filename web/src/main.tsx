@@ -5,6 +5,9 @@ import {
   Switch,
   Route,
 } from "react-router-dom";
+import 'antd/dist/antd.css'
+import { Provider } from "react-redux"
+import store from "@STORE/index"
 import App from/* webpackPrefetch: true */ "@PAGE/App"
 import Home from/* webpackPrefetch: true */ "@PAGE/Home"
 const Main = function () {
@@ -22,6 +25,6 @@ const Main = function () {
 
 
 ReactDOM.render(
-  <Main />,
+  <Provider store={store}><Main /></Provider>,
   document.getElementById("app")
 );
