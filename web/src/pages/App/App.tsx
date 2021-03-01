@@ -69,7 +69,7 @@ class App extends React.Component<any, HomeState> {
     }
     onSearch(e) {
         let _this = this
-        axios.get(`http://localhost:3048/hasUserId?userID=${e}`).then(({ data, msg }: any) => {
+        axios.get(`http://www.hecheng.info:3048/hasUserId?userID=${e}`).then(({ data, msg }: any) => {
             if (data) {
                 _this.setState({ contentButton: !data })
             }

@@ -7,8 +7,7 @@ const productionConfig = require("./config/webpack.production.config.cjs");
 const tsImportPluginFactory = require("ts-import-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
-let allowConfig =
-  process.env.NODE_ENV === "production" ? productionConfig : developmentConfig;
+
 let config = {
   entry: "./src/main.tsx",
   output: {
@@ -83,4 +82,4 @@ let config = {
   ],
 };
 
-module.exports = merge(config, allowConfig);
+module.exports = (env)=>{ return merge(config, env.production ? productionConfig : developmentConfig);}

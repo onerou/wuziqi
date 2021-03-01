@@ -17,7 +17,7 @@ export const contentWS = () => {
   return (dispatch: Dispatch, getState: GetState) => {
     const { userId, toUserId } = getState();
     const socket = new webSocket(
-      `ws://localhost:3045`,
+      `ws://www.hecheng.info:3045`,
       (e) => {
         dispatch(GETMESSAGE(e));
       },
