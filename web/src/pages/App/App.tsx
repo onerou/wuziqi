@@ -70,9 +70,7 @@ class App extends React.Component<any, HomeState> {
     onSearch(e) {
         let _this = this
         axios.get(`http://www.hecheng.info:3048/hasUserId?userID=${e}`).then(({ data, msg }: any) => {
-            if (data) {
-                _this.setState({ contentButton: !data })
-            }
+            _this.setState({ contentButton: !data })
             if (msg) {
                 message.error(msg);
             }

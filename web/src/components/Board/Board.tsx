@@ -53,9 +53,10 @@ export default class Board extends React.Component<BoradProps, BoradState> {
         this.Canvas = React.createRef()
         store.subscribe(() => {
             console.log(store.getState())
-            this.props.drewList.map((v: any) => {
-                this.drawChessman(v.position.x, v.position.y, v.isBlack)
-            })
+            const last: any = this.props.drewList[this.props.drewList.length - 1]
+            // this.props.drewList.map((v: any) => {
+            this.drawChessman(last.position.x, last.position.y, last.isBlack)
+            // })
         })
     }
 

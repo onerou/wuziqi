@@ -54,8 +54,6 @@ class Home extends React.Component<any, HomeState> {
             this.state.child.resetBoard()
             this.setState({ msg: '' })
         }
-
-        // this.setState({ messageList: [data, ...this.state.messageList] })
     }
     onDrawChessman({ x, y }) {
         if (this.state.msg) return
@@ -87,9 +85,18 @@ class Home extends React.Component<any, HomeState> {
     }
     render() {
         return (<>
+            {/* <div className="userId">
+                userId:{this.props.userId}&nbsp;&nbsp;{this.props.isBlack == null ? '' : `执子：${this.props.isBlack ? '黑' : '白'}`}
+            </div>
+            <div className="userId">
+                to:{this.props.toUserId}
+            </div> */}
             {!this.props.toUserId
                 ? ''
                 : (<>
+                    <div className="userId">
+                        userId:{this.props.userId}&nbsp;&nbsp;{this.props.isBlack == null ? '' : `执子：${this.props.isBlack ? '黑' : '白'}`}
+                    </div>
                     <Board onRef={(e) => this.onRef(e)} drewList={this.props.drewList} onDrawChessman={(e) => { this.onDrawChessman(e) }} onHasResult={(e) => this.onHasResult(e)}></Board>
                     {/* <button onClick={() => this.regretChess()}>
                         悔棋
@@ -101,12 +108,7 @@ class Home extends React.Component<any, HomeState> {
                         {this.state.msg}
                     </div>
                 </>)}
-            <div className="userId">
-                userId:{this.props.userId}&nbsp;&nbsp;{this.props.isBlack == null ? '' : `执子：${this.props.isBlack ? '黑' : '白'}`}
-            </div>
-            <div className="userId">
-                to:{this.props.toUserId}
-            </div>
+
         </>)
     }
 }
