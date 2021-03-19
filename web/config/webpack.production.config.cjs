@@ -3,7 +3,9 @@ const TerserPlugin = require('terser-webpack-plugin');
 
 module.exports = {
   mode: "production",
-  devtool: "eval",
+  output: {
+    filename: "[name].bundle-[chunkhash:8].js",
+  },
   optimization: {
     concatenateModules: true,
     sideEffects: true,
@@ -11,9 +13,6 @@ module.exports = {
     removeAvailableModules: true,
     splitChunks: {
       chunks: "all",
-    },
-    runtimeChunk: {
-      name: (entrypoint) => `runtime~${entrypoint.name}`,
     },
   },
   performance: {

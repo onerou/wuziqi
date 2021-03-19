@@ -7,11 +7,10 @@
   "type": "module",
   "scripts": {
     "prebuild": "rm -rf dist/*",
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "npx webpack s --env development",
     "dev": " npx webpack --env development",
     "build": "npx webpack --env production",
-    "postbuild": "scp -r ./dist/* hzAliyun:~/nginx/3040/wuziqi"
+    "upload": "scp -r ./dist/* hzAliyun:~/nginx/3040/wuziqi"
   },
   "keywords": [],
   "author": "",

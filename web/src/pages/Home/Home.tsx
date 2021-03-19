@@ -2,6 +2,7 @@ import React from 'react';
 import Board from '@COMPONTENT/Board'
 import { withRouter } from "react-router-dom";
 import { Button } from 'antd';
+import 'antd/lib/button/style/index.less'
 import { connect } from "react-redux"
 import { contentWS, messageFn } from "@STORE/actions/asyncAction"
 
@@ -101,9 +102,9 @@ class Home extends React.Component<any, HomeState> {
                     {/* <button onClick={() => this.regretChess()}>
                         悔棋
                     </button> */}
-                    <Button onClick={() => this.resetBoard()}>
+                    {/* <Button onClick={() => this.resetBoard()}>
                         重置
-                    </Button>
+                    </Button> */}
                     <div className="message">
                         {this.state.msg}
                     </div>

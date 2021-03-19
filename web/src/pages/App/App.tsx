@@ -3,6 +3,12 @@ import {
     withRouter
 } from "react-router-dom";
 import { Button, Card, Input, Form, message } from "antd"
+import 'antd/lib/button/style/index.less'
+import 'antd/lib/card/style/index.less'
+import 'antd/lib/input/style/index.less'
+import 'antd/lib/form/style/index.less'
+import 'antd/lib/button/style/index.less'
+
 import { ButtonContainer, UserInfoContainer } from "./AppStyle"
 import { connect } from "react-redux"
 import { contentWS, messageFn } from "@STORE/actions/asyncAction"
@@ -51,16 +57,16 @@ class App extends React.Component<any, HomeState> {
             errorMsg: '',
             contentLoading: false
         }
-        store.subscribe(() => {
-            if (this.props.history.location.pathname !== "/") return;
-            if (this.props.toUserId && this.props.history.location.pathname != "/home") this.props.history.push("/home");
-        })
     }
     changeInfoVisible(flag: boolean) {
         this.props.contentWS()
         this.setState({
             infoVisible: flag
         })
+    }
+    componentWillReceiveProps(nextProps) {
+        if (this.props.history.location.pathname !== "/") return;
+        if (nextProps.toUserId && this.props.history.location.pathname != "/home") this.props.history.push("/home");
     }
     onFinish = (e) => {
     }

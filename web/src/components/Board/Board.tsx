@@ -27,7 +27,8 @@ interface BoradProps {
     onRef?: any,
     onHasResult: any
     onDrawChessman?: (e) => void,
-    drewList: []
+    drewList: [],
+    resetBoard?: boolean
 }
 export default class Board extends React.Component<BoradProps, BoradState> {
     public Canvas;
@@ -51,13 +52,12 @@ export default class Board extends React.Component<BoradProps, BoradState> {
             win: false
         }
         this.Canvas = React.createRef()
-        store.subscribe(() => {
-            console.log(store.getState())
-            const last: any = this.props.drewList[this.props.drewList.length - 1]
-            // this.props.drewList.map((v: any) => {
-            this.drawChessman(last.position.x, last.position.y, last.isBlack)
-            // })
-        })
+    }
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.drewList) {
+            const last: any = nextProps.drewList[nextProps.drewList.length - 1]
+            last && this.drawChessman(last.position.x, last.position.y, last.isBlack)
+        }
     }
 
     initChessboardMatrix() {

@@ -2,6 +2,9 @@ const { join, resolve } =require("path");
 
 module.exports ={
     mode: "development",
+    output: {
+        filename: "[name].dev-[chunkhash:8].js",
+    },
     devtool: "source-map",
     devServer: {
         contentBase: join(__dirname, "dist"),
