@@ -5,7 +5,6 @@ import {
   Switch,
   Route,
 } from "react-router-dom";
-import "./main.css"
 import { Provider } from "react-redux"
 import store from "@STORE/index"
 import App from/* webpackPrefetch: true */ "@PAGE/App"

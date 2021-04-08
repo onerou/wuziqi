@@ -1,16 +1,21 @@
 const log4js = require("log4js");
 const fs = require("fs");
 const WebSocket = require("ws"); // 引入模块
+const https = require("https");
 const { parseTime } = require("./utils");
 const express = require("express");
 const URL = require("url");
 const keyPath = process.cwd() + "/www.hecheng.info.key";
 const certPath = process.cwd() + "/www.hecheng.info.pem";
-const app = express({
-  cert: fs.readFileSync(certPath),
-  key: fs.readFileSync(keyPath),
-});
-const ws = new WebSocket.Server({ server: app }, () => {});
+const app = express();
+const server = https.createServer(
+  {
+    cert: fs.readFileSync(certPath),
+    key: fs.readFileSync(keyPath),
+  },
+  app
+);
+const ws = new WebSocket.Server({ server }, () => {});
 log4js.configure({
   appenders: { globalError: { type: "file", filename: "./log/error.log" } },
   // 只有错误时error级别才会写入文件
