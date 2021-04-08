@@ -16,3 +16,9 @@ export const SETTOUSERID = (e?: any) => {
     payload: e,
   };
 };
+export const RESETFLAG = (e?: any) => {
+  return {
+    type: "SETTOUSERID",
+    payload: e,
+  };
+};

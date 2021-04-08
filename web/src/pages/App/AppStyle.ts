@@ -11,9 +11,10 @@ export const ButtonContainer = styled.div`
   right: 0;
   margin: auto;
   height: 520px;
-  width: 520px;
+  width: 50vw;
   display: flex;
   justify-content: center;
   align-items: center;
+  min-width: 300px;
 `;
 export const UserInfoContainer = styled.div``;

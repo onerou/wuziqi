@@ -8,6 +8,8 @@ import 'antd/lib/card/style/index.less'
 import 'antd/lib/input/style/index.less'
 import 'antd/lib/form/style/index.less'
 import 'antd/lib/button/style/index.less'
+import 'antd/lib/message/style/index.less'
+import 'antd/lib/col/style/css.js'
 
 import { ButtonContainer, UserInfoContainer } from "./AppStyle"
 import { connect } from "react-redux"
@@ -37,11 +39,11 @@ const mapDispatchToProps = {
 }
 
 const layout = {
-    labelCol: { span: 6 },
-    wrapperCol: { span: 14 },
+    labelCol: { span: 8 },
+    wrapperCol: { span: 16 },
 };
 const tailLayout = {
-    wrapperCol: { offset: 6, span: 14 },
+    wrapperCol: { offset: 0, span: 24 },
 };
 const { Search } = Input;
 class App extends React.Component<any, HomeState> {
@@ -74,8 +76,11 @@ class App extends React.Component<any, HomeState> {
         this.setState({ userName: e.target.value })
     }
     onSearch(e) {
+        if (!e) { message.error("请输入对方UserId"); return; }
         let _this = this
-        axios.get(`http://www.hecheng.info:3048/hasUserId?userID=${e}`).then(({ data, msg }: any) => {
+        if (e == this.props.userId) { message.error("此ID为本人，不可匹配"); return; }
+        axios.get(`http://www.hecheng.info:3048/hasUserId?userID=${e}`).then((res: any) => {
+            const { data, msg } = res.data
             _this.setState({ contentButton: !data })
             if (msg) {
                 message.error(msg);
@@ -97,7 +102,7 @@ class App extends React.Component<any, HomeState> {
         return (<>
             <ButtonContainer>
                 {this.state.infoVisible ?
-                    <Card title="登陆信息" style={{ width: "100%" }}>
+                    <Card title="登陆信息">
                         <Form {...layout} onFinish={this.onFinish}>
                             {/* <Form.Item label="用户名" >
                                 <Input placeholder="用户名" value={this.state.userName} onChange={(e) => this.handleChangeUserName(e)} />

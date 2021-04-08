@@ -1,10 +1,11 @@
 import React from 'react';
 import Board from '@COMPONTENT/Board'
 import { withRouter } from "react-router-dom";
-import { Button } from 'antd';
+import { Button, Descriptions, Card } from 'antd';
 import 'antd/lib/button/style/index.less'
+import 'antd/lib/descriptions/style/index.less'
 import { connect } from "react-redux"
-import { contentWS, messageFn } from "@STORE/actions/asyncAction"
+import { contentWS, messageFn, resetFlage } from "@STORE/actions/asyncAction"
 
 interface HomeState {
     child: any,
@@ -23,7 +24,8 @@ function mapStateToProps(state: HomeState) {
 
 const mapDispatchToProps = {
     contentWS,
-    messageFn
+    messageFn,
+    resetFlage
 }
 class Home extends React.Component<any, HomeState> {
     public toUserIdInput: any
@@ -42,17 +44,8 @@ class Home extends React.Component<any, HomeState> {
     onHasResult(e) {
         this.setState({ msg: e.msg })
     }
-    messageFn(message: any) {
-        const data = JSON.parse(message) || {}
-        if (data.drew) {
-            const { position, isBlack } = data.drew
-            this.state.child.drawChessman(position.x, position.y, isBlack);
-        }
-        // if (data.regretChess) {
-        //     this.state.child.regretChess()
-        // }
-        if (data.resetBoard) {
-            this.state.child.resetBoard()
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.resetBoard) {
             this.setState({ msg: '' })
         }
     }
@@ -84,32 +77,33 @@ class Home extends React.Component<any, HomeState> {
             resetBoard: true
         })
     }
+    initBoard() {
+        this.props.resetFlage({ resetBoard: false })
+    }
     render() {
         return (<>
-            {/* <div className="userId">
-                userId:{this.props.userId}&nbsp;&nbsp;{this.props.isBlack == null ? '' : `执子：${this.props.isBlack ? '黑' : '白'}`}
-            </div>
-            <div className="userId">
-                to:{this.props.toUserId}
-            </div> */}
             {!this.props.toUserId
                 ? ''
                 : (<>
-                    <div className="userId">
-                        userId:{this.props.userId}&nbsp;&nbsp;{this.props.isBlack == null ? '' : `执子：${this.props.isBlack ? '黑' : '白'}`}
-                    </div>
-                    <Board onRef={(e) => this.onRef(e)} drewList={this.props.drewList} onDrawChessman={(e) => { this.onDrawChessman(e) }} onHasResult={(e) => this.onHasResult(e)}></Board>
-                    {/* <button onClick={() => this.regretChess()}>
-                        悔棋
-                    </button> */}
-                    {/* <Button onClick={() => this.resetBoard()}>
-                        重置
-                    </Button> */}
-                    <div className="message">
-                        {this.state.msg}
-                    </div>
-                </>)}
-
+                    <Card title="User Info" style={{ width: "50vw", margin: "0 auto", minWidth: "600px" }}>
+                        <Descriptions size="small">
+                            <Descriptions.Item label="userId">{this.props.userId}</Descriptions.Item>
+                            <Descriptions.Item label="执子">{this.props.isBlack ? '黑' : '白'}</Descriptions.Item>
+                            <Descriptions.Item label="toUserId">{this.props.toUserId}</Descriptions.Item>
+                            <Descriptions.Item label="操作">
+                                <Button type="dashed" danger onClick={() => this.resetBoard()}>
+                                    认输
+                                </Button>
+                                {/* <button onClick={() => this.regretChess()}>
+                                    悔棋
+                                    </button> */}
+                            </Descriptions.Item>
+                            <Descriptions.Item label="Remark">{this.state.msg}</Descriptions.Item>
+                        </Descriptions>,
+                        <Board resetBoard={this.props.resetBoard} initBoard={() => this.initBoard()} onRef={(e) => this.onRef(e)} drewList={this.props.drewList} onDrawChessman={(e) => { this.onDrawChessman(e) }} onHasResult={(e) => this.onHasResult(e)}></Board>
+                    </Card>
+                </>)
+            }
         </>)
     }
 }

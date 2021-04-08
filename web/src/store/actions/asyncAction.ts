@@ -1,6 +1,6 @@
 // thunk Action
 import webSocket from "@UTILS/webSocket";
-import { GETMESSAGE, ADDSOCKET } from "./appAction";
+import { GETMESSAGE, ADDSOCKET, RESETFLAG } from "./appAction";
 
 type Dispatch = any;
 type GetState = any;
@@ -28,6 +28,11 @@ export const contentWS = () => {
       toUserId,
     });
     dispatch(ADDSOCKET({ socket }));
+  };
+};
+export const resetFlage = (e) => {
+  return (dispatch: Dispatch, getState: GetState) => {
+    dispatch(RESETFLAG(e));
   };
 };
 

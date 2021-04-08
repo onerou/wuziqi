@@ -1,8 +1,7 @@
 import React from 'react';
 import { BoradContainer } from './BoradStyle'
 import { cloneDeep } from 'lodash'
-import store from '@STORE/index'
-// import boots from '@UTILS/boot'
+
 interface Lattice {
     width: number, height: number
 }
@@ -27,6 +26,7 @@ interface BoradProps {
     onRef?: any,
     onHasResult: any
     onDrawChessman?: (e) => void,
+    initBoard?: () => void
     drewList: [],
     resetBoard?: boolean
 }
@@ -54,10 +54,17 @@ export default class Board extends React.Component<BoradProps, BoradState> {
         this.Canvas = React.createRef()
     }
     componentWillReceiveProps(nextProps) {
+        console.log("Board -> componentWillReceiveProps -> nextProps", nextProps.resetBoard)
         if (nextProps.drewList) {
             const last: any = nextProps.drewList[nextProps.drewList.length - 1]
             last && this.drawChessman(last.position.x, last.position.y, last.isBlack)
         }
+        console.log("Board -> componentWillReceiveProps -> this.props.resetBoard", this.props.resetBoard)
+    }
+    componentDidUpdate() {
+        // if (this.props.resetBoard) {
+        //     this.componentDidMount()
+        // }
     }
 
     initChessboardMatrix() {
@@ -70,6 +77,7 @@ export default class Board extends React.Component<BoradProps, BoradState> {
             }
         }
         this.setState({ checkerboard })
+        this.props.initBoard()
     }
     async drawChessman(x, y, isBlack) {
         const Canvas: any = this.Canvas.current
@@ -284,7 +292,6 @@ export default class Board extends React.Component<BoradProps, BoradState> {
         return (
             <BoradContainer>
                 <canvas ref={this.Canvas} style={{ backgroundColor: "rgb(251, 188, 5)" }} onClick={(e) => this.handleChlick(e)}>
-
                 </canvas>
             </BoradContainer>
         )
