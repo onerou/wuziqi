@@ -10,7 +10,7 @@ const app = express({
   cert: fs.readFileSync(certPath),
   key: fs.readFileSync(keyPath),
 });
-const ws = new WebSocket.Server({ app }, () => {});
+const ws = new WebSocket.Server({ server: app }, () => {});
 log4js.configure({
   appenders: { globalError: { type: "file", filename: "./log/error.log" } },
   // 只有错误时error级别才会写入文件
