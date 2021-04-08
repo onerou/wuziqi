@@ -196,6 +196,6 @@ app.get("/hasUserId", (req, res, next) => {
   );
 });
 
-app.listen(3048, async () => {
+server.listen(3048, () => {
   console.log("Example app listening on port 3048!");
 });
