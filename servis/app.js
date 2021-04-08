@@ -4,8 +4,8 @@ const WebSocket = require("ws"); // 引入模块
 const { parseTime } = require("./utils");
 const express = require("express");
 const URL = require("url");
-const keyPath = process.cwd() + "/ssl_certificate_key.key";
-const certPath = process.cwd() + "/ssl_certificate.pem";
+const keyPath = process.cwd() + "/www.hecheng.info.key";
+const certPath = process.cwd() + "/www.hecheng.info.pem";
 const app = express({
   cert: fs.readFileSync(certPath),
   key: fs.readFileSync(keyPath),
