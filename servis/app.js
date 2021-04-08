@@ -161,7 +161,12 @@ ws.on("connection", (client) => {
         resetBoard,
       });
   });
-  client.on("close", (msg) => {});
+  client.on("close", (msg) => {
+    console.log("close", msg);
+  });
+  client.on("error", (msg) => {
+    console.log("error", msg);
+  });
 });
 
 app.use(express.static("views"));
@@ -170,6 +175,7 @@ app.use(async (req, res, next) => {
   try {
     await next();
   } catch (e) {
+    console.log("e", e);
     logger.error(e);
   }
 });
